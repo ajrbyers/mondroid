@@ -17,9 +17,11 @@ def index(request):
 def dashboard(request):
 
 	monitor_list = models.Monitor.objects.all().order_by('name')
+	downtime_list = models.DownTime.objects.all().filter(active=True)
 
 	context = {
 		'monitor_list': monitor_list,
+		'downtime_list': downtime_list,
 	}
 	template = 'monitor/dashboard.html'
 

@@ -3,6 +3,7 @@
 {% block content %}
 	<h2>Dashboard</h2>
 	<hr />
+	<h4>Current Outages</h4>
 	<h4>Monitors</h4>
 	<table class="table table-striped">
 		<tr>
@@ -14,7 +15,7 @@
 		<tr>
 			<td>{{ monitor.name }}</td>
 			<td>{{ monitor.url }}</td>
-			<td>{{ monitor.current_state }}</td>
+			<td>{% if monitor.current_state.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
 		</tr>
 		{% empty %}
 			<tr>
