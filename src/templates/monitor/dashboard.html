@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Dashboard</h2>
+	<hr />
+	<h4>Monitors</h4>
+	<table class="table table-striped">
+		<tr>
+			<th>Name</th>
+			<th>URL</th>
+			<th>Current State</th>
+		</tr>
+		{% for monitor in monitor_list %}
+		<tr>
+			<td>{{ monitor.name }}</td>
+			<td>{{ monitor.url }}</td>
+			<td>{{ monitor.current_state }}</td>
+		</tr>
+		{% empty %}
+			<tr>
+				<td colspan="3"><p>There are no monitors. Add one.</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock content %}
