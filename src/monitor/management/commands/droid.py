@@ -1,8 +1,21 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
+
 from monitor import models
 
 import datetime
 import requests
+
+def send_email(downtime, up):
+	emails = [u.email for u in User.objects.filter(is_staff=True)]
+	if up:
+		content = '%s is now back online.' % (downtime.monitor.name)
+	else:
+		content = '%s is experiencing an outage.' % (downtime.monitor.name)
+
+	send_mail('Monitor Notification', content, settings.FROM_ADDRESS, emails)
 
 
 class Command(BaseCommand):
@@ -26,20 +39,20 @@ class Command(BaseCommand):
 			except requests.ConnectionError:
 				check = models.Check.objects.create(monitor=mon, status_code='521', history='Failed', elapsed_time='Failed', up=False)
 
-			if not check.up and not mon.current_state.up:
-				print 'If we have a downtime, and the previous state was a downtime, record this in the DownTime.checks'
-				downtime, c = models.DownTime.objects.get_or_create(monitor=mon, active=True)
-				downtime.checks.add(check)
-			elif not check.up:
-				print 'Else if we have a downtime but the previous state was up, create a downtime.'
-				downtime = models.Downtime(monitor=mon, active=True)
-				downtime.checks.add(check)
-				downtime.save()
-			elif check.up and not mon.current_state.up:
-				print 'Else if we we have an up state and the previous state was down, close down the previous downtime.'
-				downtime = models.DownTime.objects.get(monitor=mon, active=True)
-				downtime.active = False
-				downtime.save()
+			if mon.current_state:
+				if not check.up and not mon.current_state.up:
+					downtime, c = models.DownTime.objects.get_or_create(monitor=mon, active=True)
+					downtime.checks.add(check)
+				elif not check.up:
+					downtime = models.DownTime.objects.create(monitor=mon, active=True)
+					downtime.checks.add(check)
+					downtime.save()
+					send_email(downtime, False)
+				elif check.up and not mon.current_state.up:
+					downtime = models.DownTime.objects.get(monitor=mon, active=True)
+					downtime.active = False
+					downtime.save()
+					send_email(downtime, True)
 
 			mon.current_state = check
 			mon.save() 

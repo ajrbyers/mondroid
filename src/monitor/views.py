@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.management import call_command
 
 from monitor import models
 
@@ -15,6 +16,9 @@ def index(request):
 
 @login_required
 def dashboard(request):
+
+	if request.POST and 'droid' in request.POST:
+		call_command('droid')
 
 	monitor_list = models.Monitor.objects.all().order_by('name')
 	downtime_list = models.DownTime.objects.all().filter(active=True)

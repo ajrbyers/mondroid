@@ -102,3 +102,4 @@ TEMPLATE_DIRS = (
 
 # Mail settings, in dev these will output mail to console.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+FROM_ADDRESS = 'noreply@example.com'

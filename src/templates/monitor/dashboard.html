@@ -3,7 +3,20 @@
 {% block content %}
 	<h2>Dashboard</h2>
 	<hr />
-	<h4>Current Outages</h4>
+	{% if downtime_list %}
+	<div class="alert alert-danger" role="alert">
+		<h4>Current Outages</h4>
+		<ul>
+			{% for downtime in downtime_list %}
+			<li>{{ downtime.monitor.name }} is experiencing an outage.</li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+	<form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" name="droid"><span class="glyphicon glyphicon-refresh"></span> Run Droid</button>
+    </form>	
 	<h4>Monitors</h4>
 	<table class="table table-striped">
 		<tr>
