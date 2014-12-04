@@ -3,9 +3,9 @@
 {% block content %}
 	<h2>{{ monitor.name }} - {{ monitor.url }}</h2>
 	<hr />
+	{% if downtime_list %}
 	<h4> Outages</h4>
-	
-		
+			
 	{% for outage in downtime_list %}
 	<table class="table table-striped">
 		<tr>
@@ -26,6 +26,7 @@
 		{% endfor %}		
 	</table>
 	{% endfor %}
+	{% endif %}
 
 	<h4> Checks</h4>
 	<table class="table table-striped">
