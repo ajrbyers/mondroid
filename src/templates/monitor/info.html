@@ -3,6 +3,39 @@
 {% block content %}
 	<h2>{{ monitor.name }} - {{ monitor.url }}</h2>
 	<hr />
+
+	<h4> Checks</h4>
+	<table id="example" class="table table-striped">
+		<thead>
+		<tr>
+			<th>Status Code</th>
+			<th>History</th>
+			<th>Time Elapsed</th>
+			<th>Time Captured</th>
+			<th>Up?</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for check in check_list %}
+		<tr>
+			<td>{{ check.status_code }}</td>
+			<td>{{ check.history }}</td>
+			<td>{{ check.elapsed_time }} ms</td>
+			<td>{{ check.capture }}</td>
+			<td>{% if check.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+	<script>
+	  $(function(){
+	    $("#example").dataTable();
+	  })
+	</script>
+
 	{% if downtime_list %}
 	<h4> Outages</h4>
 			
@@ -27,25 +60,5 @@
 	</table>
 	{% endfor %}
 	{% endif %}
-
-	<h4> Checks</h4>
-	<table class="table table-striped">
-		<tr>
-			<th>Status Code</th>
-			<th>History</th>
-			<th>Time Elapsed</th>
-			<th>Time Captured</th>
-			<th>Up?</th>
-		</tr>
-		{% for check in check_list %}
-		<tr>
-			<td>{{ check.status_code }}</td>
-			<td>{{ check.history }}</td>
-			<td>{{ check.elapsed_time }}</td>
-			<td>{{ check.capture }}</td>
-			<td>{% if check.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
-		</tr>
-		{% endfor %}
-	</table>
 
 {% endblock content %}

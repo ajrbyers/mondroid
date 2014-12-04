@@ -74,5 +74,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	{% bootstrap_javascript %}
+	<script src="//code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css" />
+	<script>
+	$(document).ready( function () {
+		$('#outage').dataTable();
+	} );
+	</script>
 </body>
 </html>

@@ -9,6 +9,9 @@ from monitor import logic
 import datetime
 import requests
 
+def timedelta_milliseconds(td):
+    return td.days*86400000 + td.seconds*1000 + td.microseconds/1000
+
 def send_email(downtime, up):
 	emails = [u.email for u in User.objects.filter(is_staff=True)]
 	content = logic.render_email_content(up, downtime)
@@ -33,7 +36,9 @@ class Command(BaseCommand):
 				else:
 					status = False
 
-				check = models.Check.objects.create(monitor=mon, status_code=r.status_code, history=r.history, elapsed_time=r.elapsed, up=status)
+				time = timedelta_milliseconds(r.elapsed)
+
+				check = models.Check.objects.create(monitor=mon, status_code=r.status_code, history=r.history, elapsed_time=time, up=status)
 			except requests.ConnectionError:
 				check = models.Check.objects.create(monitor=mon, status_code='521', history='Failed', elapsed_time='Failed', up=False)
 
@@ -47,7 +52,7 @@ class Command(BaseCommand):
 					downtime.save()
 					send_email(downtime, False)
 				elif check.up and not mon.current_state.up:
-					downtime = models.DownTime.objects.get(monitor=mon, active=True)
+					downtime, c = models.DownTime.objects.get_or_create(monitor=mon, active=True)
 					downtime.active = False
 					downtime.save()
 					send_email(downtime, True)

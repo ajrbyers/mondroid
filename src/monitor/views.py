@@ -40,7 +40,7 @@ def dashboard(request):
 def info(request, monitor_id):
 
 	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
-	check_list = models.Check.objects.filter(monitor=monitor).order_by('-capture')[:10]
+	check_list = models.Check.objects.filter(monitor=monitor).order_by('-capture')[:100]
 	downtime_list = models.DownTime.objects.filter(monitor=monitor).order_by('-starts')[:5]
 
 	context = {
