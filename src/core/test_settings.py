@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mondroid',
+        'NAME': '',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -100,5 +100,10 @@ TEMPLATE_DIRS = (
 )
 
 
-# Mail settings, in dev these will output mail to console.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email settings, sending live emails.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = ''
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True

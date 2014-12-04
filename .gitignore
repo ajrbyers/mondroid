@@ -54,4 +54,4 @@ docs/_build/
 target/
 
 #Django
-core/settings.py
+src/core/settings.py
