@@ -4,16 +4,14 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 from monitor import models
+from monitor import logic
 
 import datetime
 import requests
 
 def send_email(downtime, up):
 	emails = [u.email for u in User.objects.filter(is_staff=True)]
-	if up:
-		content = '%s is now back online.' % (downtime.monitor.name)
-	else:
-		content = '%s is experiencing an outage.' % (downtime.monitor.name)
+	content = logic.render_email_content(up, downtime)
 
 	send_mail('Monitor Notification', content, settings.FROM_ADDRESS, emails)
 

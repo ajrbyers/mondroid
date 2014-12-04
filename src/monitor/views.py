@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
+from django.template.loader import get_template
+from django.template import Context
 
 from monitor import models
 
