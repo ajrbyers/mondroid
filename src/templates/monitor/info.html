@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>{{ monitor.name }} - {{ monitor.url }}</h2>
+	<hr />
+	<h4> Outages</h4>
+	
+		
+	{% for outage in downtime_list %}
+	<table class="table table-striped">
+		<tr>
+			<th>Status</th>
+			<th>Date/Time</th>
+			<th>Note</th>
+		</tr>
+		{% for check in outage.checks.all %}		
+		<tr>
+			<td>{{ check }}</td>
+			<td>{{ check.capture }}</td>
+			<td><span style="color:{% if forloop.first %}red;"> Outage Begins{% elif outage.active == False and forloop.last %}green;">Outage Finishes{% else %}orange;">Outage Ongoing{% endif %}</span>
+		</tr>
+		{% empty %}
+			<tr>
+				<td colspan="3"><p>There are no monitors. Add one.</td>
+			</tr>
+		{% endfor %}		
+	</table>
+	{% endfor %}
+{% endblock content %}

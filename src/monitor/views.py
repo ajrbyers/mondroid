@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, logout, login
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,9 @@ from django.core.management import call_command
 from monitor import models
 
 def index(request):
+
+	if request.user.is_authenticated():
+		return redirect(reverse('monitor_dashboard'))
 
 	context = {}
 	template = 'monitor/index.html'
@@ -28,6 +31,21 @@ def dashboard(request):
 		'downtime_list': downtime_list,
 	}
 	template = 'monitor/dashboard.html'
+
+	return render(request, template, context)
+
+def info(request, monitor_id):
+
+	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
+	check_list = models.Check.objects.filter(monitor=monitor)[:10]
+	downtime_list = models.DownTime.objects.filter(monitor=monitor).order_by('-starts')[:5]
+
+	context = {
+		'monitor': monitor,
+		'check_list': check_list,
+		'downtime_list': downtime_list,
+	}
+	template = 'monitor/info.html'
 
 	return render(request, template, context)
 

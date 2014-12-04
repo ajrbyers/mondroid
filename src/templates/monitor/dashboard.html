@@ -26,7 +26,7 @@
 		</tr>
 		{% for monitor in monitor_list %}
 		<tr>
-			<td>{{ monitor.name }}</td>
+			<td><a href="{% url 'monitor_info' monitor.id %}">{{ monitor.name }}</a></td>
 			<td>{{ monitor.url }}</td>
 			<td>{% if monitor.current_state.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
 		</tr>

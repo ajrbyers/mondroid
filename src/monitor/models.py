@@ -29,3 +29,4 @@ class DownTime(models.Model):
 	monitor = models.ForeignKey(Monitor)
 	checks = models.ManyToManyField(Check)
 	active = models.BooleanField(default=True)
+	starts = models.DateTimeField(auto_now=True, editable=True)
