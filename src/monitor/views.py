@@ -34,6 +34,7 @@ def dashboard(request):
 
 	return render(request, template, context)
 
+@login_required
 def info(request, monitor_id):
 
 	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
