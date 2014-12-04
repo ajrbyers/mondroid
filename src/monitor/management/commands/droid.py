@@ -13,7 +13,7 @@ def send_email(downtime, up):
 	emails = [u.email for u in User.objects.filter(is_staff=True)]
 	content = logic.render_email_content(up, downtime)
 
-	send_mail('Monitor Notification', content, settings.FROM_ADDRESS, emails)
+	send_mail('Monitor Notification', content, settings.FROM_ADDRESS, emails, html_message=content)
 
 
 class Command(BaseCommand):
