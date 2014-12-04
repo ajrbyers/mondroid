@@ -26,4 +26,25 @@
 		{% endfor %}		
 	</table>
 	{% endfor %}
+
+	<h4> Checks</h4>
+	<table class="table table-striped">
+		<tr>
+			<th>Status Code</th>
+			<th>History</th>
+			<th>Time Elapsed</th>
+			<th>Time Captured</th>
+			<th>Up?</th>
+		</tr>
+		{% for check in check_list %}
+		<tr>
+			<td>{{ check.status_code }}</td>
+			<td>{{ check.history }}</td>
+			<td>{{ check.elapsed_time }}</td>
+			<td>{{ check.capture }}</td>
+			<td>{% if check.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
+		</tr>
+		{% endfor %}
+	</table>
+
 {% endblock content %}
