@@ -42,20 +42,5 @@ class Command(BaseCommand):
 			except requests.ConnectionError:
 				check = models.Check.objects.create(monitor=mon, status_code='521', history='Failed', elapsed_time='Failed', up=False)
 
-			if mon.current_state:
-				if not check.up and not mon.current_state.up:
-					downtime, c = models.DownTime.objects.get_or_create(monitor=mon, active=True)
-					downtime.checks.add(check)
-				elif not check.up:
-					downtime = models.DownTime.objects.create(monitor=mon, active=True)
-					downtime.checks.add(check)
-					downtime.save()
-					send_email(downtime, False)
-				elif check.up and not mon.current_state.up:
-					downtime, c = models.DownTime.objects.get_or_create(monitor=mon, active=True)
-					downtime.active = False
-					downtime.save()
-					send_email(downtime, True)
-
 			#mon.current_state = check
 			#mon.save() 

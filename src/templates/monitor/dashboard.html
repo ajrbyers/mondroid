@@ -3,16 +3,16 @@
 {% block content %}
 	<h2>Dashboard</h2>
 	<hr />
-	{% if downtime_list %}
-	<div class="alert alert-danger" role="alert">
+	{% for monitor in monitor_list %}
+	{% if not monitor.current_state.up %}
+		<div class="alert alert-danger" role="alert">
 		<h4>Current Outages</h4>
 		<ul>
-			{% for downtime in downtime_list %}
-			<li>{{ downtime.monitor.name }} is experiencing an outage.</li>
-			{% endfor %}
+			<li>{{ monitor.name }} is experiencing an outage.</li>
 		</ul>
 	</div>
 	{% endif %}
+	{% endfor %}
 	<form method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary" name="droid"><span class="glyphicon glyphicon-refresh"></span> Run Droid</button>
