@@ -2,9 +2,19 @@ from django.db import models
 from datetime import datetime
 from django.utils import timezone
 
+import requests
+
 class Monitor(models.Model):
 	name = models.CharField(max_length=200, help_text="A Monitor's display name.")
 	url = models.URLField(max_length=2000, unique=True, help_text="The URL to be monitored.")
+
+	def save(self, *args, **kwargs):
+		try:
+			request = requests.get(self.url)
+			self.url = request.url
+		except requests.exceptions.RequestException:
+			pass
+		super(Monitor, self).save(*args, **kwargs)
 
 	@property
 	def current_state(self):
