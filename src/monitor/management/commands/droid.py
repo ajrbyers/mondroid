@@ -57,5 +57,5 @@ class Command(BaseCommand):
 					downtime.save()
 					send_email(downtime, True)
 
-			mon.current_state = check
-			mon.save() 
+			#mon.current_state = check
+			#mon.save() 
