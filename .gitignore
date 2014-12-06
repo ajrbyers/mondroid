@@ -56,3 +56,6 @@ target/
 #Django
 src/core/settings.py
 src/core/andy_settings.py
+
+# Temp files
+*~
