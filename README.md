@@ -1,31 +1,26 @@
-mondroid
-========
+# mondroid
 
 Simple monitoring system written in Python/Django using requests.
 
-install
-========
+## installation
 
-Clone repo and create database
+Clone repo:
 
-Update/create settings.py based on dev or test settings files provided.
+	$ git clone https://github.com/ajrbyers/mondroid.git
 
-If you are using virtualenv, create a new environment and from the root directory run:
+If you use [virtualenv](https://virtualenvwrapper.readthedocs.org/en/latest/), 
+create a new virtualenv and switch to it.
 
-```
-pip install -r requirements.txt
-```
+Install requirements:
 
-Then from the src folder run:
+	$ sudo apt-get install sqlite3
+	$ pip install -r requirements.txt
 
-```
-python manage.py syncdb
-```
+Make your own settings file:
 
-Follow by
+	$ cp src/core/dev_settings.py src/core/settings.py
 
-```
-python manage.py collectstatic
-```
+Create a database:
 
-Done.
+	$ python manage.py syncdb
+
