@@ -1,0 +1,1 @@
+*/5 * * * * PATH="/path/to/virtualenv/bin/:$PATH"; python /path/to/mondroid/src/manage.py droid
