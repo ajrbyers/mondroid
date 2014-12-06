@@ -6,7 +6,7 @@
 	{% for monitor in monitor_list %}
 	{% if not monitor.current_state.up %}
 		<div class="alert alert-danger" role="alert">
-		<h4>Current Outages</h4>
+		<h4>Outage</h4>
 		<ul>
 			<li>{{ monitor.name }} is experiencing an outage.</li>
 		</ul>
