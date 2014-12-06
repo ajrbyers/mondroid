@@ -21,8 +21,7 @@ class Monitor(models.Model):
 		
 		"""
 		# find the first state different to the current state
-		current_state = self.current_state
-		if not current_state:
+		if not self.current_state:
 			# we have nothing to play with
 			return None
 		
