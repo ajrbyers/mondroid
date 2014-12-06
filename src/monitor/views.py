@@ -26,11 +26,9 @@ def dashboard(request):
 		call_command('droid')
 
 	monitor_list = models.Monitor.objects.all().order_by('name')
-	downtime_list = models.DownTime.objects.all().filter(active=True)
 
 	context = {
 		'monitor_list': monitor_list,
-		'downtime_list': downtime_list,
 	}
 	template = 'monitor/dashboard.html'
 
@@ -41,12 +39,10 @@ def info(request, monitor_id):
 
 	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
 	check_list = models.Check.objects.filter(monitor=monitor).order_by('-capture')[:100]
-	downtime_list = models.DownTime.objects.filter(monitor=monitor).order_by('-starts')[:5]
 
 	context = {
 		'monitor': monitor,
 		'check_list': check_list,
-		'downtime_list': downtime_list,
 	}
 	template = 'monitor/info.html'
 

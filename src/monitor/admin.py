@@ -9,14 +9,9 @@ class CheckAdmin(admin.ModelAdmin):
     readonly_fields = ("capture",)
     list_filter = ('monitor', 'up', 'capture')
 
-class DownTimeAdmin(admin.ModelAdmin):
-	list_display = ('monitor', 'active')
-
-
 admin_list = [
     (Monitor, MonitorAdmin),
     (Check, CheckAdmin),
-    (DownTime, DownTimeAdmin),
 ]
 
 [admin.site.register(*t) for t in admin_list]

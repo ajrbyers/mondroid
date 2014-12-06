@@ -28,39 +28,4 @@
 		</tbody>
 	</table>
 
-	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
-	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
-	<script>
-	  $(function(){
-	    $("#example").dataTable( {
-	    	"order": [[ 3, "desc" ]]
-	    } );
-	  })
-	</script>
-
-	{% if downtime_list %}
-	<h4> Outages</h4>
-			
-	{% for outage in downtime_list %}
-	<table class="table table-striped">
-		<tr>
-			<th>Status</th>
-			<th>Date/Time</th>
-			<th>Note</th>
-		</tr>
-		{% for check in outage.checks.all %}		
-		<tr>
-			<td>{{ check }}</td>
-			<td>{{ check.capture }}</td>
-			<td><span style="color:{% if forloop.first %}red;"> Outage Begins{% elif outage.active == False and forloop.last %}green;">Outage Finishes{% else %}orange;">Outage Ongoing{% endif %}</span>
-		</tr>
-		{% empty %}
-			<tr>
-				<td colspan="3"><p>There are no monitors. Add one.</td>
-			</tr>
-		{% endfor %}		
-	</table>
-	{% endfor %}
-	{% endif %}
-
 {% endblock content %}
