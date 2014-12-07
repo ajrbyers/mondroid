@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load timedelta %}
+
+{% block content %}
+	<h2>{{ monitor.name }} - {{ monitor.url }}</h2>
+	<hr />
+	
+	<h4>Checks</h4>
+	<table id="example" class="table table-striped">
+		<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Time in state</th>
+			<th>Latency (avg)</th>
+			
+			<th>&nbsp;</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for gh in grouped_history_list %}
+		<tr>
+			<td>{{ gh.start.capture }}</td>
+			<td>{{ gh.end.capture }}</td>
+			<td>{{ gh.span|timedelta }}</td>
+			<td>{% if gh.start.up %}{{ gh.avg_latency }}{% endif %}</td>
+			
+			<td>{% if gh.start.up %}<i style="color:green" class="fa fa-arrow-circle-o-up"></i>{% else %}<i style="color:red" class="fa fa-arrow-circle-o-down"></i>{% endif %}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock content %}2

@@ -6,11 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 from django.template.loader import get_template
 from django.template import Context
-
+from annoying.decorators import render_to
+from django.utils import timezone
 from monitor import models
+from datetime import timedelta
+import logic
 
 def index(request):
-
 	if request.user.is_authenticated():
 		return redirect(reverse('monitor_dashboard'))
 
@@ -35,8 +37,22 @@ def dashboard(request):
 	return render(request, template, context)
 
 @login_required
-def info(request, monitor_id):
+@render_to('monitor/detail.html')
+def detail(request, monitor_id):
+	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
+	two_months = 28 * 2 # there are 13 months to a logical year.
+	two_months_ago = timezone.now() - timedelta(days=two_months)
+	grouped_history = logic.chunked_history1(monitor, capture__gte=two_months_ago)
+	summarised_history = logic.summarise_history(grouped_history)
+	return {
+		'monitor': monitor,
+		'grouped_history_list': summarised_history,
+	}
+    
+        
 
+@login_required
+def info(request, monitor_id):
 	monitor = get_object_or_404(models.Monitor, pk=monitor_id)
 	check_list = models.Check.objects.filter(monitor=monitor).order_by('-capture')[:100]
 
@@ -45,7 +61,6 @@ def info(request, monitor_id):
 		'check_list': check_list,
 	}
 	template = 'monitor/info.html'
-
 	return render(request, template, context)
 
 def user_login(request):

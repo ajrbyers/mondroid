@@ -46,3 +46,14 @@ class MonitorLogic(TestCase):
         ch4 = create_many_states(m, number=3, up=False, starting_at=ch3[-1].capture)
         ch5 = create_many_states(m, number=2, up=True, starting_at=ch4[-1].capture)
         self.assertEqual(logic.chunked_history1(m), [ch1, ch2, ch3, ch4, ch5])
+
+    def test_monitor_grouping_filtered(self):
+        "test that the chunked_history1 function filters by it's arguments correctly"
+        m = models.Monitor(name='foo', url='http://example.org')
+        m.save()
+        ch1 = create_many_states(m, number=6, up=True)
+        ch2 = create_many_states(m, number=5, up=False, starting_at=ch1[-1].capture)
+        ch3 = create_many_states(m, number=4, up=True, starting_at=ch2[-1].capture)
+        ch4 = create_many_states(m, number=3, up=False, starting_at=ch3[-1].capture)
+        ch5 = create_many_states(m, number=2, up=True, starting_at=ch4[-1].capture)
+        self.assertEqual(logic.chunked_history1(m, capture__gte=ch3[-1].capture), [ch1, ch2, ch3])
