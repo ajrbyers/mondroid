@@ -1,6 +1,6 @@
 # mondroid
 
-Simple monitoring system written in Python/Django using requests.
+Simple monitoring system written in Python/Django.
 
 ## installation
 
@@ -33,4 +33,20 @@ installed with:
 To verify it was correctly installed, use:
 
 	$ crontab -l
+
+## running remotely on development server (__not__ recommended)
+
+_Django's development server wasn't meant for production. No serious 
+considerations for security or performance were made._
+
+To have the development server accept requests from the world, use:
+
+	$ python manage.py 0.0.0.0:8000
+	
+## running remotely on an Apache webserver
+
+
+
+## running remotely on an Nginx webserver
+
 
