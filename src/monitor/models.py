@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+
 from django.utils import timezone
 
 import requests
@@ -54,9 +55,9 @@ class Check(models.Model):
 	monitor = models.ForeignKey(Monitor)
 	status_code = models.CharField(max_length=10)
 	history = models.CharField(max_length=2000)
-	elapsed_time = models.CharField(max_length=200)
+	elapsed_time = models.CharField(max_length=200) # change this to a float ?
 	up = models.BooleanField(default=True)
-	capture = models.DateTimeField(auto_now=True)
+	capture = models.DateTimeField(default=timezone.now)
 
 	class Meta:
 		ordering = ('-capture',)
