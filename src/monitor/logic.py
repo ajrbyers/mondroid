@@ -24,7 +24,7 @@ def chunklist(somelist, splitter):
 
 def chunked_history1(m, *args, **kwargs):
     splitter = lambda obj: getattr(obj, 'up', None)
-    return chunklist(models.Check.objects.filter(*args, **kwargs), splitter)
+    return chunklist(m.check_set.filter(*args, **kwargs), splitter)
 
 def chunked_history2(monitor):
     # TODO: a recursive version of Monitor.time_in_state jumping
