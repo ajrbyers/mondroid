@@ -57,6 +57,6 @@ target/
 src/core/settings.py
 src/core/andy_settings.py
 *.sqlite3
-
+*.tab
 # Temp files
 *~

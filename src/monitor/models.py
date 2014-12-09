@@ -4,6 +4,7 @@ import requests
 
 class Monitor(models.Model):
 	name = models.CharField(max_length=200, help_text="A Monitor's display name.")
+	slug = models.SlugField(max_length=200, help_text="Slug of the name, or another slug of your choosing.")
 	url = models.URLField(max_length=2000, unique=True, help_text="The URL to be monitored.")
 
 	def save(self, *args, **kwargs):

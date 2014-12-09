@@ -8,6 +8,7 @@ from monitor import logic
 
 import datetime
 import requests
+import json
 
 def timedelta_milliseconds(td):
     return td.days*86400000 + td.seconds*1000 + td.microseconds/1000
@@ -21,26 +22,24 @@ def send_email(downtime, up):
 
 class Command(BaseCommand):
 
-	help = 'Runs Requests against monitors and creates Check object and, if the service is down, handles DownTimes.'
+	help = 'Reads fetcher_droid logs and creates checks. Also emails about downtimes.'
 	
 
 	def handle(self, *args, **options):
 		monitor_list = models.Monitor.objects.all()
 
-		for mon in monitor_list:
-			try:
-				r = requests.get(mon.url, verify=False)
-				print r.status_code
-				if r.status_code == 200:
-					status = True
-				else:
-					status = False
+		for monitor in monitor_list:
+			fetcher_log = '/var/log/mondroid/%s.fetcher.log' % (monitor.slug)
+			log_list = [line.rstrip().strip("'") for line in open(fetcher_log)]
 
-				time = timedelta_milliseconds(r.elapsed)
+			for log_line in log_list:
+				log = json.loads(log_line)
 
-				check = models.Check.objects.create(monitor=mon, status_code=r.status_code, history=r.history, elapsed_time=time, up=status)
-			except requests.ConnectionError:
-				check = models.Check.objects.create(monitor=mon, status_code='521', history='Failed', elapsed_time='Failed', up=False)
+				if log['status'] == 200: 
+					up = True 
+				else: 
+					up = False
 
-			#mon.current_state = check
-			#mon.save() 
+				check, c = models.Check.objects.get_or_create(monitor=monitor, capture=log['date_time'], defaults={'status_code': log['status'], 'elapsed_time': float(log['elapsed']), 'history': log['history'], 'up': up})
+				
+				print check, c

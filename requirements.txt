@@ -2,5 +2,8 @@ Django==1.7.1
 django-annoying==0.8.0
 django-bootstrap3==5.0.3
 django-timedeltafield==0.7.3
+python-crontab==1.8.2
+python-dateutil==2.3
 requests==2.5.0
+six==1.8.0
 wsgiref==0.1.2
