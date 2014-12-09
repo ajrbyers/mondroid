@@ -6,6 +6,7 @@
 	<hr />
 	
 	<h4>Checks</h4>
+	{% if grouped_history_list %}
 	<table id="example" class="table table-striped">
 		<thead>
 		<tr>
@@ -30,5 +31,9 @@
 		{% endfor %}
 		</tbody>
 	</table>
+	{% else %}
+	<p>This monitor has <strong>no history</strong>.</p>
+	<p>To begin monitoring a website, run <code>python manage.py install</code> to install the necessary cron jobs. See the <a href="https://github.com/ajrbyers/mondroid/blob/master/README.md"><code>README.txt</code></a> for more information.</p>
+	{% endif %}
 
 {% endblock content %}2
