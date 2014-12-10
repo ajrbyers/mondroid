@@ -11,6 +11,18 @@ Clone repo:
 If you use [virtualenv](https://virtualenvwrapper.readthedocs.org/en/latest/), 
 create a new virtualenv and switch to it. This is recommended.
 
+	$ sudo pip install virtualenvwrapper
+	
+Append this to your `~/.bashrc` file
+	
+	export WORKON_HOME=$HOME/.virtualenvs
+	source /usr/local/bin/virtualenvwrapper.sh
+	export PIP_DOWNLOAD_CACHE=$HOME/.pip/download_cache
+	
+Create your virtualenv:
+	
+	$ mkvirtualenv mondroid
+
 Install requirements:
 
 	$ sudo apt-get install sqlite3
@@ -18,7 +30,8 @@ Install requirements:
 
 Make your own settings file:
 
-	$ cp src/core/dev_settings.py src/core/settings.py
+	$ cd src/
+	$ cp core/dev_settings.py core/settings.py
 
 Create a database:
 
@@ -45,7 +58,29 @@ To have the development server accept requests from the world, use:
 	
 ## running remotely on an Apache webserver
 
+This assumes Ubuntu.
 
+	$ sudo apt-get install apache2 libapache2-mod-wsgi
+
+Included is an [example Apache2 vhost](apache2.2-vhost.conf.example) that should
+be installed and enabled with:
+
+	$ sudo cp apache2.2-vhost.conf.example /etc/apache2/sites-available/mondroid.conf
+	$ sudo a2ensite mondroid
+
+The settings must then be fitted to your particular environment:
+
+	$ sudo vim /etc/apache2/sites-available/mondroid.conf
+
+Afterwards restart the Apache server:
+
+	$ sudo service apache2 restart
+
+Django requires static files to be collected into a single place to be served.
+
+	$ cd /srv/mondroid/src/
+	$ workon mondroid
+	$ python manage.py collectstatic
 
 ## running remotely on an Nginx webserver
 
