@@ -64,7 +64,7 @@ To have the development server accept requests from the world, use:
 	
 ## running remotely on an Apache webserver
 
-This assumes Ubuntu.
+This assumes Ubuntu, Apache 2.2 and a clone of the repo in `/srv/mondroid`.
 
 	$ sudo apt-get install apache2 libapache2-mod-wsgi
 
