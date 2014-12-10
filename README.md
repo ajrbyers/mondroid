@@ -8,11 +8,13 @@ Clone repo:
 
 	$ git clone https://github.com/ajrbyers/mondroid.git
 
+### installing virtualenv
+
 If you use [virtualenv](https://virtualenvwrapper.readthedocs.org/en/latest/), 
 create a new virtualenv and switch to it. This is recommended.
 
 	$ sudo pip install virtualenvwrapper
-	
+
 Append this to your `~/.bashrc` file
 	
 	export WORKON_HOME=$HOME/.virtualenvs
@@ -22,6 +24,8 @@ Append this to your `~/.bashrc` file
 Create your virtualenv:
 	
 	$ mkvirtualenv mondroid
+
+### installing mondroid
 
 Install requirements:
 
@@ -36,6 +40,8 @@ Make your own settings file:
 Create a database:
 
 	$ python manage.py syncdb
+
+### installing a cronjob
 
 An example cron job comes with the project in the file `cronjob.example`. 
 The paths in this file should be changed to match your own, but it can then be 
