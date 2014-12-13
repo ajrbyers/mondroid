@@ -1,0 +1,33 @@
+# the upstream component nginx needs to connect to
+upstream django {
+    server unix:///tmp/routing-test-uwsgi.sock;
+}
+
+# configuration of the server
+server {
+    listen      80;
+    #server_name 54.191.55.45;
+    server_name elife-api-dev;
+    charset     utf-8;
+
+    access_log /var/log/nginx/elife-api.access.log;
+    error_log /var/log/nginx/elife-api.error.log;
+
+    # max upload size
+    client_max_body_size 5M;
+
+    # Django media
+#    location /media  {
+#        alias /path/to/your/mysite/media;  # your Django project's media files - amend as required
+#    }
+
+    location /static {
+        alias /srv/elife-api/collected-static;
+    }
+
+    # all non-media requests
+    location / {
+        uwsgi_pass  unix:/tmp/elife-api-uwsgi.sock;
+        include     /srv/elife-api/uwsgi_params; # the uwsgi_params file you installed
+    }
+}

@@ -91,4 +91,36 @@ Django requires static files to be collected into a single place to be served.
 
 ## running remotely on an Nginx webserver
 
+This assumes Ubuntu 14.04, distribution's standard Nginx, 
+[uWSGI](https://uwsgi-docs.readthedocs.org/en/latest/) and a clone of the repo 
+in `/srv/mondroid/`.
+
+Install the new dependencies:
+
+	$ sudo apt-get install nginx-full python-dev && sudo pip install 'uwsgi>=2.0.8'
+
+Provided is an [example nginx vhost](nginx-vhost.conf.example). Copy it across
+and tweak the settings as necessary:
+
+	$ sudo cp /srv/mondroid/nginx-vhost.conf.example /etc/nginx/sites-available/mondoid.conf
+	$ sudo vim /etc/nginx/sites-available/mondoid.conf
+	
+Enable the site:
+
+	$ sudo ln -s /etc/nginx/sites-available/mondoid.conf /etc/nginx/sites-enabled/mondoid.conf
+
+_Before_ you restart Nginx you will need to configure uWSGI. uWSGI is highly 
+configurable, but a good starting point is available in the [example uwsgi.ini]
+(uwsgi.ini.example) file provided. Copy the file across and update as necessary.
+
+	$ cp uwsgi.ini.example uwsgi.ini
+	$ vim uwsgi.ini
+	
+_Ensure the `virtualenv` param is correctly set!_
+
+Start uWSGI:
+
+	$ cd /srv/mondroid
+	$ sudo uwsgi -d --ini uwsgi.ini
+	$ sudo service nginx restart
 
