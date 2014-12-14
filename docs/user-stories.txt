@@ -6,7 +6,8 @@ particular user's perspective. The number of stories generated is finite but the
 number of tasks a story may yield seems infinite. Stories get prioritized and 
 within stories, tasks get prioritized. Not all requirements are ever fulfilled.
 
-Below are the stories I've generated for Mondroid. 
+Below are the stories I've generated for Mondroid, they appear at the top of my
+enhancement issues.
 
   - Luke
 
