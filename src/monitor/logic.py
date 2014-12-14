@@ -3,6 +3,8 @@ from django.template import Context
 from django.utils import timezone
 import models
 
+from datetime import timedelta
+
 def render_email_content(up, outage):
 	return get_template('email/end.html' if up else 'email/start.html').render(
         Context({
@@ -58,3 +60,34 @@ def summarise_history(grouped_history):
             "avg_latency": "%sms" % average_latency(group),
         })
     return x
+
+def uptime(monitor):
+    twenty_four_hours = timezone.now() - timedelta(hours=24)
+    last_week = timezone.now() - timedelta(days=7)
+    last_month = timezone.now() - timedelta(days=28)
+    last_year = timezone.now() - timedelta(days=365)
+
+    uptime_dict = {
+        'tfh_history': summarise_history(chunked_history1(monitor, capture__gte=twenty_four_hours)),
+        'lw_history': summarise_history(chunked_history1(monitor, capture__gte=last_week)),
+        'lm_history': summarise_history(chunked_history1(monitor, capture__gte=last_month)),
+        'ly_history': summarise_history(chunked_history1(monitor, capture__gte=last_year)),
+    }
+
+    results = {}
+    for k, v in uptime_dict.iteritems():
+        down = timedelta()
+        up = timedelta()
+        for status_span in uptime_dict[k]:
+            if status_span.get('up') == 'up':
+                up += status_span.get('span')
+            elif status_span.get('up') == 'down':
+                down += status_span.get('span')
+
+        total = up.total_seconds() + down.total_seconds()
+        results[k] = (up.total_seconds() / total) * 100
+
+    return results
+
+
+

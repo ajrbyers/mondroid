@@ -44,9 +44,11 @@ def detail(request, monitor_id):
 	two_months_ago = timezone.now() - timedelta(days=two_months)
 	grouped_history = logic.chunked_history1(monitor, capture__gte=two_months_ago)
 	summarised_history = logic.summarise_history(grouped_history)
+	uptime_percentage = logic.uptime(monitor)
 	return {
 		'monitor': monitor,
 		'grouped_history_list': summarised_history,
+		'uptime_percentage': uptime_percentage,
 	}
     
         

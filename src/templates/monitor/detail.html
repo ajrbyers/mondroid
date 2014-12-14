@@ -4,8 +4,29 @@
 {% block content %}
 	<h2>{{ monitor.name }} - {{ monitor.url }}</h2>
 	<hr />
+	<h4>Up Time</h4>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: {{ uptime_percentage.tfh_history }}%">
+	    <span>Last 24 hours {{ uptime_percentage.tfh_history|truncatechars:8 }}%</span>
+	  </div>
+	</div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ uptime_percentage.lw_history }}%">
+	    <span>Last 7 days {{ uptime_percentage.lw_history|truncatechars:8 }}</span>
+	  </div>
+	</div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ uptime_percentage.lm_history }}%">
+	    <span>Last 28 days {{ uptime_percentage.lm_history|truncatechars:8 }}%</span>
+	  </div>
+	</div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: {{ uptime_percentage.ly_history }}%">
+	    <span>Last 365 days {{ uptime_percentage.ly_history|truncatechars:8 }}%</span>
+	  </div>
+	</div>
 	
-	<h4>Checks</h4>
+	<h4>History</h4>
 	{% if grouped_history_list %}
 	<table id="example" class="table table-striped">
 		<thead>
