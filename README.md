@@ -43,13 +43,18 @@ Create a database:
 
 ### installing a cronjob
 
-Mondroid comes with a command that will install droid fetch commands into your Crontab. You should run this command as the user you want to fetch the results.
+Mondroid comes with a command that will install droid fetch commands into your 
+Crontab. You should run this command as the user you want to fetch the results.
 
 	$ python manage.py install_droids go
 
-This command will create a cron command for each of your monitors. You can run it again to add new monitors once you've created them. These "droids" will run requests against your server and then record the checks in log files located in /var/log/mondroid/.
+This command will create a cron command for each of your monitors. You can run 
+it again to add new monitors once you've created them. These "droids" will run 
+requests against your server and then record the checks in log files located in 
+`/var/log/mondroid/`.
 
-The command will also install a job for the parser droid, this droid consumes the log files and creates new checks.
+The command will also install a job for the parser droid, this droid consumes 
+the log files and creates new checks.
 
 You can test the crontab output by running:
 
