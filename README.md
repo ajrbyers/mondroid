@@ -43,15 +43,16 @@ Create a database:
 
 ### installing a cronjob
 
-An example cron job comes with the project in the file `cronjob.example`. 
-The paths in this file should be changed to match your own, but it can then be 
-installed with:
+Mondroid comes with a command that will install droid fetch commands into your Crontab. You should run this command as the user you want to fetch the results.
 
-	$ crontab <name-of-your-cronjob-file>
+	$ python manage.py install_droids go
 
-To verify it was correctly installed, use:
+This command will create a cron command for each of your monitors. You can run it again to add new monitors once you've created them. These "droids" will run requests against your server and then record the checks in log files located in /var/log/mondroid/.
 
-	$ crontab -l
+The command will also install a job for the parser droid, this droid consumes the log files and creates new checks.
+
+You can test the crontab output by running:
+	$ python manage.py install_droids test
 
 ## running remotely on development server (__not__ recommended)
 
