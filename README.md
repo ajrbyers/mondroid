@@ -122,5 +122,8 @@ Start uWSGI:
 
 	$ cd /srv/mondroid
 	$ sudo uwsgi -d --ini uwsgi.ini
+	
+Now restart Nginx:
+
 	$ sudo service nginx restart
 
