@@ -25,7 +25,7 @@ def index(request):
 def dashboard(request):
 
 	if request.POST and 'droid' in request.POST:
-		call_command('droid')
+		call_command('parser_droid')
 
 	monitor_list = models.Monitor.objects.all().order_by('name')
 

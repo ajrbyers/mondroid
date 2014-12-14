@@ -7,6 +7,15 @@ from monitor import models
 
 from crontab import CronTab
 import os
+import sys
+
+action = sys.argv[1:][1]
+
+def find_job(tab, comment):
+	for job in tab:
+   		if job.comment == comment:
+   			return job
+   	return None
 
 class Command(BaseCommand):
 
@@ -17,20 +26,26 @@ class Command(BaseCommand):
 
 		monitor_list = models.Monitor.objects.all()
 		virtualenv = os.environ.get('VIRTUAL_ENV', None)
-		virtualenv_command = 'export PATH=%s/bin:/usr/local/bin:/usr/bin:/bin' % (virtualenv)
 		tab = CronTab()
 
 		for monitor in monitor_list:
-			django_command = "&& python %s/manage.py fetcher_droid %s >> /var/log/mondroid/%s.fetcher.log" % (settings.BASE_DIR, monitor.slug, monitor.slug)
-
-			if virtualenv:
-				command = '%s %s' % (virtualenv_command, django_command)
-			else:
-				command = '%s' % (django_command)
-
-			cron_job = tab.new(command)
-			cron_job.minute.every(5)
+			current_job = find_job(tab, "fetcher_droid_%s" % monitor.slug)
 
 
-		tab.write()
-		print tab.render()
+			if current_job == None:
+				django_command = "&& python %s/manage.py fetcher_droid %s >> /var/log/mondroid/%s.fetcher.log" % (settings.BASE_DIR, monitor.slug, monitor.slug)
+
+				if virtualenv:
+					command = 'export PATH=%s/bin:/usr/local/bin:/usr/bin:/bin %s' % (virtualenv, django_command)
+				else:
+					command = '%s' % (django_command)
+
+				cron_job = tab.new(command, comment="fetcher_droid_%s" % monitor.slug)
+				cron_job.minute.every(5)
+
+		if action == 'test':
+			print tab.render()
+		elif action == 'quiet':
+			pass
+		else:
+			tab.write()

@@ -8,7 +8,6 @@ from monitor import models
 
 import sys
 import requests
-import datetime
 import pprint
 import json
 
@@ -24,7 +23,7 @@ class Command(BaseCommand):
 		monitor = models.Monitor.objects.get(slug=monitor_slug)
 		request = requests.get(monitor.url)
 		output = {
-			'date_time': timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
+			'date_time': timezone.now().strftime("%Y-%m-%d %H:%M:%S %Z"),
 			'status': request.status_code,
 			'history': request.history,
 			'elapsed': request.elapsed.total_seconds(),

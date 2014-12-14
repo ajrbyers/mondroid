@@ -22,7 +22,7 @@ def send_email(downtime, up):
 
 class Command(BaseCommand):
 
-	help = 'Reads fetcher_droid logs and creates checks. Also emails about downtimes.'
+	help = 'Reads fetcher_droid logs and creates checks.'
 	
 
 	def handle(self, *args, **options):
@@ -30,7 +30,10 @@ class Command(BaseCommand):
 
 		for monitor in monitor_list:
 			fetcher_log = '/var/log/mondroid/%s.fetcher.log' % (monitor.slug)
-			log_list = [line.rstrip().strip("'") for line in open(fetcher_log)]
+			try:
+				log_list = [line.rstrip().strip("'") for line in open(fetcher_log)]
+			except IOError:
+				print 'No log file found. Either the fetcher has not run on a new monitor, or the file is missing.'
 
 			for log_line in log_list:
 				log = json.loads(log_line)
@@ -40,6 +43,10 @@ class Command(BaseCommand):
 				else: 
 					up = False
 
-				check, c = models.Check.objects.get_or_create(monitor=monitor, capture=log['date_time'], defaults={'status_code': log['status'], 'elapsed_time': float(log['elapsed']), 'history': log['history'], 'up': up})
-				
-				print check, c
+				check, c = models.Check.objects.get_or_create(
+					monitor=monitor, 
+					capture=datetime.datetime.strptime(log['date_time'], "%Y-%m-%d %H:%M:%S %Z"), 
+					defaults={'status_code': log['status'], 
+					'elapsed_time': float(log['elapsed']), 
+					'history': log['history'], 
+					'up': up})
