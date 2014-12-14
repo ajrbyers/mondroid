@@ -52,6 +52,7 @@ This command will create a cron command for each of your monitors. You can run i
 The command will also install a job for the parser droid, this droid consumes the log files and creates new checks.
 
 You can test the crontab output by running:
+
 	$ python manage.py install_droids test
 
 ## running remotely on development server (__not__ recommended)
