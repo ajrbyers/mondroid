@@ -1,6 +1,6 @@
 # mondroid
 
-Simple monitoring system written in Python/Django.
+Simple website monitoring system written in Python/Django.
 
 ## installation
 
@@ -43,10 +43,13 @@ Create a database:
 
 ### installing a cronjob
 
-Mondroid comes with a command that will install droid fetch commands into your 
-Crontab. You should run this command as the user you want to fetch the results.
+Mondroid has a separate processes for recording the results of website checks 
+and reading those checks into the application. 
 
-	$ python manage.py install_droids go
+Mondroid comes with a Django task that installs droid fetch commands into your 
+crontab. You should run this command as the user you want to fetch the results.
+
+	$ python manage.py install_droids
 
 This command will create a cron command for each of your monitors. You can run 
 it again to add new monitors once you've created them. These "droids" will run 
