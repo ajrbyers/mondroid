@@ -9,7 +9,10 @@ from crontab import CronTab
 import os
 import sys
 
-action = sys.argv[1:][1]
+try:
+	action = sys.argv[1:][1]
+except:
+	action = ''
 
 def find_job(tab, comment):
 	for job in tab:
