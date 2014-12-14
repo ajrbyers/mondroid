@@ -9,7 +9,7 @@ within stories, tasks get prioritized. Not all requirements are ever fulfilled.
 Below are the stories I've generated for Mondroid, they appear at the top of my
 enhancement issues.
 
-  - Luke
+  \- Luke
 
 
 
