@@ -1,3 +1,4 @@
+from django.contrib.syndication.views import Feed
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
@@ -8,6 +9,7 @@ from django.template.loader import get_template
 from django.template import Context
 from annoying.decorators import render_to
 from django.utils import timezone
+
 from monitor import models
 from datetime import timedelta
 import logic
@@ -101,3 +103,22 @@ def user_logout(request):
 	logout(request)
 
 	return redirect(reverse('monitor_index'))
+
+class AllMonitorsFeed(Feed):
+	title = 'Mondroid Monitor Feed'
+	link = '/dashboard/'
+	description = 'Latest status for Monitors'
+
+	def items(self):
+		return models.Monitor.objects.order_by('name')
+
+	def item_title(self, item):
+		return "%s is %s" % (item.name, item.current_state.up_or_down())
+
+	def item_description(self, item):
+		return "Monitor has been %s for %s" % (item.current_state.up_or_down(), item.time_in_state)
+
+	def item_link(self, item):
+		return reverse('monitor_info', args=[item.pk])
+
+
