@@ -1,0 +1,32 @@
+# the upstream component nginx needs to connect to
+upstream django {
+    server unix:///tmp/mondroid-uwsgi.sock;
+}
+
+# configuration of the server
+server {
+    listen      80;
+    server_name mondroid.example.com;
+    charset     utf-8;
+
+    access_log /var/log/nginx/mondroid.access.log;
+    error_log /var/log/nginx/mondroid.error.log;
+
+    # max upload size
+    client_max_body_size 5M;
+
+    # Django media
+#    location /media  {
+#        alias /path/to/your/mysite/media;  # your Django project's media files - amend as required
+#    }
+
+    location /static {
+        alias /srv/mondroid/collected-static;
+    }
+
+    # all non-media requests
+    location / {
+        uwsgi_pass  unix:/tmp/mondroid-uwsgi.sock;
+        include     /srv/mondroid/uwsgi_params; # the uwsgi_params file you installed
+    }
+}

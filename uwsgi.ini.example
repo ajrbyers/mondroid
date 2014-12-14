@@ -1,0 +1,20 @@
+[uwsgi]
+chdir=/srv/mondroid/src/
+uid=www-data
+gid=www-data
+pythonpath=/srv/mondroid/src/
+
+socket = /tmp/mondroid-uwsgi.sock
+chmod-socket = 666
+
+logto = /var/log/mondroid-uwsgi.log
+
+module=core.wsgi:application
+virtualenv=/home/ubuntu/.virtualenvs/mondroid/
+master=True
+chmod-socket = 666
+processes=1
+
+vacuum=True
+
+max-requests=5000

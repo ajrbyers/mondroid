@@ -1,0 +1,39 @@
+<VirtualHost *:80>
+        ServerName  mondroid.example.com
+        ServerAdmin tech@ubiquitypress.com
+
+        Alias /robots.txt /srv/mondroid/collected-static/robots.txt
+
+        Alias /static/ /srv/mondroid/collected-static/
+        <Directory /srv/mondroid/collected-static>
+            Require all granted
+        </Directory>
+
+        Alias /media/ /srv/mondroid/media/
+        <Directory /srv/mondroid/media>
+            Require all granted
+        </Directory>
+
+        WSGIScriptAlias / /srv/mondroid/src/core/wsgi.py
+        WSGIDaemonProcess mondroid.example.com python-path=/srv/mondroid/src:/home/elife/.virtualenvs/mondroid/lib/python2.7/site-packages
+        # if there are multiple instances of mondroid running
+        WSGIProcessGroup mondroid.example.com
+
+        <Directory /srv/mondroid/src/core>
+                <Files wsgi.py>
+                    Require all granted
+                </Files>
+        </Directory>
+
+        # http://wiki.apache.org/httpd/InternalDummyConnection
+        # disable logging of the "(internal dummy connection)" requests. 
+        # may be skewing traffic reported by logwatch.
+        SetEnvIf Remote_Addr "127\.0\.0\.1" loopback
+        ErrorLog ${APACHE_LOG_DIR}/mondroid_error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/mondroid_access.log combined env=!loopback
+</VirtualHost>
